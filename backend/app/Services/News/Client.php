@@ -7,17 +7,13 @@ use Illuminate\Support\Facades\Http;
 
 class Client
 {
-    private PendingRequest $api;
+    protected PendingRequest $api;
 
-    public function __construct(string $baseUrl)
+    public function __construct(string $baseUrl, string $apiKey)
     {
         $this->api = Http::baseUrl($baseUrl)
+            ->withToken($apiKey)
             ->acceptJson()
             ->asJson();
-    }
-
-    public function setBaseUrl(string $baseUrl): void
-    {
-        $this->api->baseUrl($baseUrl);
     }
 }
