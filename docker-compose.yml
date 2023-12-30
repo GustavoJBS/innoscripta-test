@@ -4,10 +4,6 @@ services:
         build:
             context: ./backend
             dockerfile: Dockerfile
-        environment:
-            DB_DATABASE: ${DB_DATABASE}
-            DB_USERNAME: ${DB_USERNAME}
-            DB_PASSWORD: ${DB_PASSWORD}
         ports:
             - 8000:8000
         volumes:
