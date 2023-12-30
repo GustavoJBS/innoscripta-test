@@ -1,20 +1,13 @@
 <?php
 
-namespace App\Services\News;
+namespace App\Services\News\NewsOrg;
 
-use App\Enums\News;
+use App\Services\News\Client;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 
-class Article
+class Article extends Client
 {
-    private PendingRequest $api;
-
-    public function __construct()
-    {
-        $this->api = Http::acceptJson()->asJson();
-    }
-
     public function get(?string $sources = null): mixed
     {
         $query = [];
