@@ -11,7 +11,6 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Queue\SerializesModels;
 
 class SyncArticlesFromNewsOrgSources implements ShouldQueue
@@ -36,7 +35,7 @@ class SyncArticlesFromNewsOrgSources implements ShouldQueue
                 'image' => optional($article)['urlToImage'],
                 'content' => $article['content'],
                 'description' => $article['description'],
-                'published_at' => Carbon::parse($article['publishedAt']),
+                'published_at' => Carbon::createFromFormat('Y-m-d H:i:s', $article['publishedAt']),
                 'language' => $this->source->language,
                 'category_id' => $this->category->id,
                 'source_id' => $this->source->id,
