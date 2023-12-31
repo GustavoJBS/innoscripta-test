@@ -8,10 +8,13 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('sources', function (Blueprint $table) {
             $table->id();
 
-            $table->text('name');
+            $table->string('name')->unique();
+            $table->text('url');
+            $table->text('country');
+            $table->text('description')->nullable();
 
             $table->timestamps();
         });
@@ -19,6 +22,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('sources');
     }
 };
