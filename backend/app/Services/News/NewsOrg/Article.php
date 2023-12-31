@@ -3,10 +3,11 @@
 namespace App\Services\News\NewsOrg;
 
 use App\Services\News\Client;
+use Illuminate\Support\Collection;
 
 class Article extends Client
 {
-    public function get(string $sources): mixed
+    public function get(string $sources): Collection
     {
         $results = collect();
         $query = [
