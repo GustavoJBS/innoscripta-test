@@ -24,6 +24,14 @@ services:
             - backend
         networks:
             - app
+    redis:
+        image: redis:alpine
+        ports: 
+            - '${REDIS_PORT:-6379}:6379'
+        volumes:
+            - ./redis:/app/redis
+        networks:
+            - app
     mysql:
         image: mysql:8.0
         ports:
