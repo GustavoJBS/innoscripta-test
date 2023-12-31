@@ -18,8 +18,8 @@ return new class extends Migration
             $table->text('title');
             $table->text('url');
             $table->text('image')->nullable();
-            $table->longText('content');
-            $table->text('description');
+            $table->longText('content')->nullable();
+            $table->text('description')->nullable();
             $table->string('language', 2);
 
             $table->timestamp('published_at');
