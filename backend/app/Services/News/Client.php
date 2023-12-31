@@ -9,10 +9,10 @@ class Client
 {
     protected PendingRequest $api;
 
-    public function __construct(string $baseUrl, string $apiKey)
+    public function __construct(string $url, string $key)
     {
-        $this->api = Http::baseUrl($baseUrl)
-            ->withToken($apiKey)
+        $this->api = Http::baseUrl($url)
+            ->withToken($key)
             ->acceptJson()
             ->asJson();
     }

@@ -6,16 +6,30 @@ use App\Services\News\Client;
 
 class Article extends Client
 {
-    public function get(?string $sources = null): mixed
+    public function get(string $sources): mixed
     {
-        $query = [];
+        $results = collect();
+        $query = [
+            'sources' => $sources,
+            'page' => 1,
+        ];
 
-        if ($sources) {
-            $query['sources'] = $sources;
+        while (true) {
+            $result = $this->api->get('top-headlines', $query);
+
+            if (! $result->successful()) {
+                break;
+            }
+
+            $results->push(...$result->json('articles'));
+
+            if ($results->count() === $result->json('totalResults')) {
+                break;
+            }
+
+            $query['page']++;
         }
 
-        return $this->api
-            ->get('everything', $query)
-            ->json();
+        return $results;
     }
 }
