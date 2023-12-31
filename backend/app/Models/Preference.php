@@ -10,4 +10,10 @@ class Preference extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    protected $casts = [
+        'languages' => 'array',
+        'sources' => 'array',
+        'categories' => 'array',
+    ];
 }
