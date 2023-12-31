@@ -12,6 +12,32 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    public function login(): Response|JsonResponse
+    {
+        $validateUser = Validator::make(request()->all(), [
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        return match (true) {
+            $validateUser->fails() => response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors(),
+            ], Response::HTTP_UNAUTHORIZED),
+            ! Auth::attempt(request()->only(['email', 'password'])) => response()->json([
+                'status' => false,
+                'message' => 'Email & Password does not match with our record.',
+            ], Response::HTTP_UNAUTHORIZED),
+            default => response()->json([
+                'status' => true,
+                'message' => 'User Logged In Successfully',
+                'user' => auth()->user(),
+                'token' => auth()->user()->createToken('API TOKEN')->plainTextToken,
+            ], Response::HTTP_OK)
+        };
+    }
+
     public function register(): Response|JsonResponse
     {
         $validateUser = Validator::make(request()->all(), [
