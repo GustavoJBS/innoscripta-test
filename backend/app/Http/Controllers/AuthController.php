@@ -32,7 +32,7 @@ class AuthController extends Controller
             default => response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
-                'user' => auth()->user(),
+                'user' => auth()->user()->load('preference'),
                 'token' => auth()->user()->createToken('API TOKEN')->plainTextToken,
             ], Response::HTTP_OK)
         };
@@ -64,7 +64,7 @@ class AuthController extends Controller
         return response()->json([
             'status' => true,
             'message' => 'User Logged In Successfully',
-            'user' => auth()->user(),
+            'user' => auth()->user()->load('preference'),
             'token' => auth()->user()->createToken('API TOKEN')->plainTextToken,
         ], Response::HTTP_CREATED);
     }
