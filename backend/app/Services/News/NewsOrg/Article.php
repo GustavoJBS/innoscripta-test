@@ -7,11 +7,11 @@ use Illuminate\Support\Collection;
 
 class Article extends Client
 {
-    public function get(string $sources): Collection
+    public function get(string $source): Collection
     {
         $results = collect();
         $query = [
-            'sources' => $sources,
+            'sources' => $source,
             'page' => 1,
         ];
 
