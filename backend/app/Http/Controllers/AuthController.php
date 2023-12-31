@@ -52,7 +52,7 @@ class AuthController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validateUser->errors(),
-            ], 401);
+            ], Response::HTTP_UNAUTHORIZED);
         }
 
         $validateUser = Arr::except($validateUser->getData(), 'confirmedPassword');
@@ -66,6 +66,6 @@ class AuthController extends Controller
             'message' => 'User Logged In Successfully',
             'user' => auth()->user(),
             'token' => auth()->user()->createToken('API TOKEN')->plainTextToken,
-        ], 201);
+        ], Response::HTTP_CREATED);
     }
 }
