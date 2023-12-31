@@ -3,8 +3,6 @@
 namespace App\Services\News\NewsOrg;
 
 use App\Services\News\Client;
-use Illuminate\Http\Client\PendingRequest;
-use Illuminate\Support\Facades\Http;
 
 class Source extends Client
 {

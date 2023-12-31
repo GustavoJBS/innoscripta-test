@@ -16,7 +16,6 @@ services:
         build:
             context: ./frontend
             dockerfile: Dockerfile
-        tty: true
         ports:
             - 3000:3000
         volumes:
@@ -27,11 +26,13 @@ services:
             - app
     mysql:
         image: mysql:8.0
+        ports:
+            - 3306:3306
         environment:
             MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
             MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
             MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_USER: ${DB_USERNAME}
         networks:
             - app
 
