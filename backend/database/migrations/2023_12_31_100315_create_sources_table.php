@@ -14,6 +14,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->text('url');
             $table->text('country');
+            $table->string('language', 2);
             $table->text('description')->nullable();
 
             $table->timestamps();
