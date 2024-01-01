@@ -15,6 +15,10 @@ class Article extends Model
     {
         return $query->when($filters, function (Builder $query, array $filters) {
             foreach ($filters as $prop => $value) {
+                if (empty($value)) {
+                    continue;
+                }
+
                 match ($prop) {
                     'language' => $query->whereIn('language', $value),
                     'source'   => $query->whereIn('source_id', $value),
