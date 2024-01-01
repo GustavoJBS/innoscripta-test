@@ -16,24 +16,28 @@ use Illuminate\Queue\SerializesModels;
 
 class SyncDataFromNewsOrg implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public Article $articlesService;
 
     public Source $sourceService;
 
-    public function __construct()
+    public function handle(): void
     {
         $this->articlesService = new Article(...config('services.news-api'));
         $this->sourceService = new Source(...config('services.news-api'));
-    }
 
-    public function handle(): void
-    {
         Category::query()
-            ->each(fn (Category $category) => $this->sourceService
-                ->get($category->name)
-                ->each(fn (array $source) => $this->syncArticlesFromSource($this->saveSource($source), $category))
+            ->each(
+                fn (Category $category) => $this->sourceService
+                    ->get($category->name)
+                    ->each(fn (array $source) => $this->syncArticlesFromSource(
+                        $this->saveSource($source),
+                        $category->id
+                    ))
             );
     }
 
@@ -47,7 +51,7 @@ class SyncDataFromNewsOrg implements ShouldQueue
                 'image' => optional($article)['urlToImage'],
                 'content' => $article['content'],
                 'description' => $article['description'],
-                'published_at' => Carbon::createFromFormat('Y-m-d H:i:s', $article['publishedAt']),
+                'published_at' => Carbon::createFromFormat('Y-m-d', substr($article['publishedAt'], 0, 10)),
                 'language' => $source->language,
                 'category_id' => $categoryId,
                 'source_id' => $source->id,
