@@ -40,7 +40,11 @@ class User extends Authenticatable
         parent::boot();
 
         static::created(function (User $user) {
-            $user->preference()->create();
+            $user->preference()->create([
+                'languages' => [],
+                'sources' => [],
+                'categories' => [],
+            ]);
         });
     }
 }
