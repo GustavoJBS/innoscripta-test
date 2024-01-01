@@ -9,8 +9,6 @@ class Article extends Client
 {
     public function get(int $page = 1): Collection
     {
-        $results = collect();
-
         $query = [
             'api-key' => config('services.guardian.key'),
             'page' => $page,

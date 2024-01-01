@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\NewsOrg;
 
 use App\Models\Article as ArticleModel;
 use App\Models\Category;
@@ -14,7 +14,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class SyncDataFromNewsOrg implements ShouldQueue
+class SyncArticles implements ShouldQueue
 {
     use Dispatchable;
     use InteractsWithQueue;

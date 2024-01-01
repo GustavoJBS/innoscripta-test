@@ -2,14 +2,14 @@
 
 namespace App\Console;
 
-use App\Console\Commands\SyncDataFromNewsApis;
+use App\Console\Commands\SyncArticlesFromNewsApis;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
     protected $commands = [
-        SyncDataFromNewsApis::class,
+        SyncArticlesFromNewsApis::class,
     ];
 
     protected function schedule(Schedule $schedule): void
