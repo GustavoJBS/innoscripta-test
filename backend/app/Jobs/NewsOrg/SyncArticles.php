@@ -2,17 +2,13 @@
 
 namespace App\Jobs\NewsOrg;
 
-use App\Models\Article as ArticleModel;
-use App\Models\Category;
-use App\Models\Source as SourceModel;
-use App\Services\News\NewsOrg\Article;
-use App\Services\News\NewsOrg\Source;
-use Carbon\Carbon;
+use App\Models\{Category, Source as SourceModel};
+use App\Services\News\NewsOrg\{Article, Source};
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
+use Illuminate\Support\Facades\Bus;
 
 class SyncArticles implements ShouldQueue
 {
@@ -21,6 +17,8 @@ class SyncArticles implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public const MAX_PAGES = 4;
+
     public Article $articlesService;
 
     public Source $sourceService;
@@ -28,43 +26,52 @@ class SyncArticles implements ShouldQueue
     public function handle(): void
     {
         $this->articlesService = new Article(...config('services.news-api'));
-        $this->sourceService = new Source(...config('services.news-api'));
+        $this->sourceService   = new Source(...config('services.news-api'));
 
         Category::query()
             ->each(
                 fn (Category $category) => $this->sourceService
                     ->get($category->name)
-                    ->each(fn (array $source) => $this->syncArticlesFromSource(
+                    ->each(fn (array $source) => $this->syncArticles(
                         $this->saveSource($source),
                         $category->id
                     ))
             );
     }
 
-    public function syncArticlesFromSource(SourceModel $source, int $categoryId): void
+    public function syncArticles(SourceModel $source, int $categoryId): void
     {
-        $this->articlesService
-            ->get($source->name)
-            ->each(fn (array $article) => $this->saveArticle([
-                'title' => $article['title'],
-                'url' => $article['url'],
-                'image' => optional($article)['urlToImage'],
-                'content' => $article['content'],
-                'description' => $article['description'],
-                'published_at' => Carbon::createFromFormat('Y-m-d', substr($article['publishedAt'], 0, 10)),
-                'language' => $source->language,
-                'category_id' => $categoryId,
-                'source_id' => $source->id,
-            ]));
-    }
+        $data = $this->articlesService->get($source->name);
 
-    private function saveArticle(array $article): ArticleModel
-    {
-        return ArticleModel::query()
-            ->updateOrCreate(
-                ['title' => $article['title']],
-                [...collect($article)->except('title')]
-            );
+        if (!$data->has('articles') || !$data->has('totalResults')) {
+            return;
+        }
+
+        $firstPage = collect($data['articles'])
+            ->map(fn ($article) => new ImportArticle(
+                $article,
+                $source->id,
+                $source->language,
+                $categoryId
+            ));
+
+        $totalPages = ceil($data['totalResults'] / Article::PAGE_SIZE);
+
+        $lastPage = $totalPages > self::MAX_PAGES
+            ? self::MAX_PAGES
+            : $totalPages;
+
+        $pageChunks = collect(range(2, $lastPage))
+            ->map(fn (int $page) => new ImportArticlesChunk(
+                $page,
+                $source->id,
+                $source->language,
+                $categoryId
+            ));
+
+        Bus::batch($firstPage->merge($pageChunks))
+            ->name('Import Articles from News Org')
+            ->dispatch();
     }
 
     private function saveSource(array $source): SourceModel

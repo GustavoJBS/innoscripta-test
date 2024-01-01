@@ -7,30 +7,16 @@ use Illuminate\Support\Collection;
 
 class Article extends Client
 {
-    public function get(string $source): Collection
+    public const PAGE_SIZE = 100;
+
+    public function get(string $source, int $page = 1): Collection
     {
-        $results = collect();
         $query = [
-            'sources' => $source,
-            'page' => 1,
+            'sources'  => $source,
+            'page'     => $page,
+            'pageSize' => self::PAGE_SIZE,
         ];
 
-        while (true) {
-            $result = $this->api->get('top-headlines', $query);
-
-            if (! $result->successful()) {
-                break;
-            }
-
-            $results->push(...$result->json('articles'));
-
-            if ($results->count() === $result->json('totalResults')) {
-                break;
-            }
-
-            $query['page']++;
-        }
-
-        return $results;
+        return $this->api->get('top-headlines', $query)->collect();
     }
 }
