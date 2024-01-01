@@ -33,7 +33,6 @@ class ImportArticle implements ShouldQueue
                 [
                     'url'          => $this->article['url'],
                     'image'        => optional($this->article)['urlToImage'],
-                    'content'      => $this->article['content'],
                     'description'  => $this->article['description'],
                     'published_at' => Carbon::createFromFormat('Y-m-d', substr($this->article['publishedAt'], 0, 10)),
                     'language'     => $this->language,
