@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticlesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PreferenceController;
 use Illuminate\Support\Facades\Route;
@@ -20,4 +21,6 @@ Route::post('register', [AuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('preference', [PreferenceController::class, 'save']);
+
+    Route::get('articles', [ArticlesController::class, 'get']);
 });
