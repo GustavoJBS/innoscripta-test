@@ -12,8 +12,8 @@ class Preference extends Model
     protected $guarded = ['id'];
 
     protected $casts = [
-        'languages' => 'array',
-        'sources' => 'array',
+        'languages'  => 'array',
+        'sources'    => 'array',
         'categories' => 'array',
     ];
 }

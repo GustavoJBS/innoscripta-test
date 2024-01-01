@@ -3,16 +3,18 @@
 namespace App\Jobs\Guardian;
 
 use App\Services\News\Guardian\Article;
-use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
+use Illuminate\Bus\{Batchable, Queueable};
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
 
 class ImportArticlesChunk implements ShouldQueue
 {
-    use Batchable, Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Batchable;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     public Article $articlesService;
 
@@ -28,7 +30,7 @@ class ImportArticlesChunk implements ShouldQueue
 
         $data = $this->articlesService->get($this->page);
 
-        if (! $data->has('results')) {
+        if (!$data->has('results')) {
             return;
         }
 

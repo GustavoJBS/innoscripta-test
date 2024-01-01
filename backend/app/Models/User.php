@@ -41,8 +41,8 @@ class User extends Authenticatable
 
         static::created(function (User $user) {
             $user->preference()->create([
-                'languages' => [],
-                'sources' => [],
+                'languages'  => [],
+                'sources'    => [],
                 'categories' => [],
             ]);
         });

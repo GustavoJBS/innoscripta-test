@@ -7,8 +7,7 @@ use App\Services\News\Guardian\Article;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
 use Illuminate\Support\Facades\Bus;
 
 class SyncArticles implements ShouldQueue
@@ -33,16 +32,17 @@ class SyncArticles implements ShouldQueue
     {
         $data = $this->articlesService->get();
 
-        if (! $data->has('results')) {
+        if (!$data->has('results') || !$data->has('pages')) {
             return;
         }
 
         $firstPage = collect($data['results'])
             ->map(fn ($article) => new ImportArticle($article, $source->id));
 
-        $totalPages = $data['pages'] > self::MAX_PAGES
+        $lastPage   = $data['pages'];
+        $totalPages = $lastPage > self::MAX_PAGES
             ? self::MAX_PAGES
-            : $data['pages'];
+            : $lastPage;
 
         $pageChunks = collect(range(2, $totalPages))
             ->map(fn (int $page) => new ImportArticlesChunk($page, $source->id));
@@ -57,8 +57,8 @@ class SyncArticles implements ShouldQueue
         return Source::query()->firstOrCreate(
             ['name' => 'The Guardian'],
             [
-                'url' => 'https://www.theguardian.com/',
-                'country' => 'us',
+                'url'      => 'https://www.theguardian.com/',
+                'country'  => 'us',
                 'language' => 'en',
             ]
         );

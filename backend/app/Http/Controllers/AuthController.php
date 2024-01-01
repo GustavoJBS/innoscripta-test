@@ -3,37 +3,34 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Illuminate\Http\{JsonResponse, Response};
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\{Auth, Hash, Validator};
 
 class AuthController extends Controller
 {
     public function login(): Response|JsonResponse
     {
         $validateUser = Validator::make(request()->all(), [
-            'email' => ['required', 'email'],
+            'email'    => ['required', 'email'],
             'password' => ['required'],
         ]);
 
         return match (true) {
             $validateUser->fails() => response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => 'validation error',
-                'errors' => $validateUser->errors(),
+                'errors'  => $validateUser->errors(),
             ], Response::HTTP_UNAUTHORIZED),
-            ! Auth::attempt(request()->only(['email', 'password'])) => response()->json([
-                'status' => false,
+            !Auth::attempt(request()->only(['email', 'password'])) => response()->json([
+                'status'  => false,
                 'message' => 'Email & Password does not match with our record.',
             ], Response::HTTP_UNAUTHORIZED),
             default => response()->json([
-                'status' => true,
+                'status'  => true,
                 'message' => 'User Logged In Successfully',
-                'user' => auth()->user()->load('preference'),
-                'token' => auth()->user()->createToken('API TOKEN')->plainTextToken,
+                'user'    => auth()->user()->load('preference'),
+                'token'   => auth()->user()->createToken('API TOKEN')->plainTextToken,
             ], Response::HTTP_OK)
         };
     }
@@ -41,17 +38,17 @@ class AuthController extends Controller
     public function register(): Response|JsonResponse
     {
         $validateUser = Validator::make(request()->all(), [
-            'name' => ['required'],
-            'email' => ['required', 'email', 'unique:users,email'],
-            'password' => ['required', 'min:6'],
+            'name'              => ['required'],
+            'email'             => ['required', 'email', 'unique:users,email'],
+            'password'          => ['required', 'min:6'],
             'confirmedPassword' => ['required', 'same:password'],
         ]);
 
         if ($validateUser->fails()) {
             return response()->json([
-                'status' => false,
+                'status'  => false,
                 'message' => 'validation error',
-                'errors' => $validateUser->errors(),
+                'errors'  => $validateUser->errors(),
             ], Response::HTTP_UNAUTHORIZED);
         }
 
@@ -62,10 +59,10 @@ class AuthController extends Controller
         Auth::login(User::create($validateUser));
 
         return response()->json([
-            'status' => true,
+            'status'  => true,
             'message' => 'User Logged In Successfully',
-            'user' => auth()->user()->load('preference'),
-            'token' => auth()->user()->createToken('API TOKEN')->plainTextToken,
+            'user'    => auth()->user()->load('preference'),
+            'token'   => auth()->user()->createToken('API TOKEN')->plainTextToken,
         ], Response::HTTP_CREATED);
     }
 }

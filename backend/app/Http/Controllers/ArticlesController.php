@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Response;
+use Illuminate\Http\{JsonResponse, Response};
 
 class ArticlesController extends Controller
 {
@@ -19,8 +18,8 @@ class ArticlesController extends Controller
             ->paginate(10);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Articles Fetched Successfully.',
+            'status'   => true,
+            'message'  => 'Articles Fetched Successfully.',
             'articles' => $articles,
         ], Response::HTTP_OK);
     }

@@ -11,7 +11,7 @@ class Article extends Client
     {
         $query = [
             'api-key' => config('services.guardian.key'),
-            'page' => $page,
+            'page'    => $page,
         ];
 
         return $this->api->get('search', $query)->collect('response');

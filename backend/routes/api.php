@@ -1,8 +1,6 @@
 <?php
 
-use App\Http\Controllers\ArticlesController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PreferenceController;
+use App\Http\Controllers\{ArticlesController, AuthController, PreferenceController};
 use Illuminate\Support\Facades\Route;
 
 /*

@@ -2,15 +2,12 @@
 
 namespace App\Jobs\Guardian;
 
-use App\Models\Article;
-use App\Models\Category;
+use App\Models\{Article, Category};
 use Carbon\Carbon;
-use Illuminate\Bus\Batchable;
-use Illuminate\Bus\Queueable;
+use Illuminate\Bus\{Batchable, Queueable};
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
 
 class ImportArticle implements ShouldQueue
 {
@@ -35,12 +32,12 @@ class ImportArticle implements ShouldQueue
     {
         Article::query()
             ->updateOrCreate([
-                'title' => $this->data['webTitle'],
-                'url' => $this->data['webUrl'],
-                'language' => 'en',
+                'title'        => $this->data['webTitle'],
+                'url'          => $this->data['webUrl'],
+                'language'     => 'en',
                 'published_at' => Carbon::createFromFormat('Y-m-d', substr($this->data['webPublicationDate'], 0, 10)),
-                'category_id' => $this->categoryId,
-                'source_id' => $this->sourceId,
+                'category_id'  => $this->categoryId,
+                'source_id'    => $this->sourceId,
             ]);
     }
 }
