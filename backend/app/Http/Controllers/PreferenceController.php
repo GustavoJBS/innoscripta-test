@@ -8,7 +8,7 @@ class PreferenceController extends Controller
 {
     public function save(): Response|JsonResponse
     {
-        $validatedData = $this->validate(request(), [
+        $this->validate(request(), [
             'languages'    => ['array', 'min:1'],
             'sources'      => ['array', 'min:3'],
             'sources.*'    => ['numeric', 'exists:sources,id'],
@@ -27,7 +27,7 @@ class PreferenceController extends Controller
         return response()->json([
             'status'  => true,
             'message' => 'User Preferences saved Successfully',
-            'user'    => auth()->user()->load('preference'),
+            'user'    => auth()->user(),
         ], Response::HTTP_CREATED);
     }
 }
