@@ -37,7 +37,7 @@ export default function Login() {
             return
         }
 
-        fetch('http://localhost:8000/api/register', {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
