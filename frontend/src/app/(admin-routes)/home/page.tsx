@@ -49,13 +49,12 @@ export default function Home() {
         <div className="w-full min-h-screen items-center justify-center my-4">
             <h1 className="text-2xl mb-8">Olá, {session?.user.name}. Bem vindo(a)!</h1>
             <div className="flex flex-col">
-                <div className="w-full grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="w-full grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                     {
                         articles.map((article: any) => (
                             <Article
                                 key={article.id}
                                 title={article.title}
-                                description={article.description}
                                 imageUrl={String(article.source.name).includes('Guardian') ? '/guardian-logo.png' : article.image}
                                 navigateUrl={article.url}
                                 source={article.source}
