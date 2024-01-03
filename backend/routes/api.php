@@ -21,5 +21,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('preference', [PreferenceController::class, 'index']);
     Route::put('preference', [PreferenceController::class, 'save']);
 
+    Route::get('articles/filters', [ArticlesController::class, 'getFilters']);
+
     Route::get('articles', [ArticlesController::class, 'get']);
 });
