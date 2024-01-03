@@ -4,12 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\{Builder, Model};
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Article extends Model
 {
     use HasFactory;
 
     protected $guarded = ['id'];
+
+    protected $with = [
+        'source'
+    ];
 
     public function scopeFilter(Builder $query, array $filters): Builder
     {
@@ -37,5 +42,10 @@ class Article extends Model
             ->whereIn('language', $preference->languages)
             ->orWhereIn('source_id', $preference->sources)
             ->orWhereIn('category_id', $preference->categories);
+    }
+
+    public function source(): BelongsTo
+    {
+        return $this->belongsTo(Source::class);
     }
 }
