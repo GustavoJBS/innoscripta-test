@@ -11,16 +11,14 @@ type CardProps = {
 
 const Article: React.FC<CardProps> = ({ title, description, imageUrl, navigateUrl }) => {
     return (
-        <div 
-            className="border-2 py-2 px-3 border-gray-300 hover:opacity-60 duration-300"
-        >
-            {imageUrl && <img src={imageUrl} alt={title} />}
+        <div className="flex flex-col gap-3 border-2 p-4 border-gray-300">
+            {imageUrl && <img className="mx-auto my-3 w-60 h-40 object-cover" src={imageUrl} alt={title} />}
 
-            <a href={navigateUrl}>
+            <a href={navigateUrl} className="hover:opacity-60 duration-300 underline">
                 {title}
             </a>
 
-            {description && <p>{description}</p>}
+            {description && <p dangerouslySetInnerHTML={{ __html: description }}></p>}
         </div>
     );
 };
