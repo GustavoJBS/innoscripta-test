@@ -6,6 +6,15 @@ use Illuminate\Http\{JsonResponse, Response};
 
 class PreferenceController extends Controller
 {
+    public function index(): Response|JsonResponse
+    {
+        return response()->json([
+            'status'     => true,
+            'message'    => 'User Preferences Fetched Successfully',
+            'preference' => auth()->user()->preference,
+        ], Response::HTTP_OK);
+    }
+
     public function save(): Response|JsonResponse
     {
         $this->validate(request(), [

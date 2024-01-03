@@ -18,7 +18,8 @@ Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::post('preference', [PreferenceController::class, 'save']);
+    Route::get('preference', [PreferenceController::class, 'index']);
+    Route::put('preference', [PreferenceController::class, 'save']);
 
     Route::get('articles', [ArticlesController::class, 'get']);
 });
