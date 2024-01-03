@@ -17,7 +17,7 @@ class ArticlesController extends Controller
             )->when(
                 !$this->containsAnyFilter(),
                 fn (Builder $query) => $query->filterByPreference()
-            )->orderBy('published_at', 'desc')->paginate(10);
+            )->where('published_at', '>=', now()->subYears(2))->orderBy('published_at', 'desc')->paginate(10);
 
         return response()->json([
             'status'   => true,
