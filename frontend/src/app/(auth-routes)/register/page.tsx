@@ -9,10 +9,13 @@ export default function Login() {
     const [name, setName] = useState<string>('')
     const [email, setEmail] = useState<string>('')
     const [password, setPassword] = useState<string>('')
+    const [confirmedPassword, setConfirmedPassword] = useState<string>('')
 
     const router = useRouter()
 
     async function handleSubmit(event: SyntheticEvent) {
+        event.preventDefault()
+
         if (!name) {
             toast.error('Name is required.')
             return
@@ -28,6 +31,12 @@ export default function Login() {
             return
         }
 
+        if (password != confirmedPassword) {
+            toast.error('Confirm Password need to be equal to Password.')
+
+            return
+        }
+
         fetch('http://localhost:8000/api/register', {
             method: 'POST',
             headers: {
@@ -36,7 +45,8 @@ export default function Login() {
             body: JSON.stringify({
                 name,
                 email,
-                password
+                password,
+                confirmedPassword
             })
         }).then(async () => {
             const result = await signIn('credentials', {
@@ -47,6 +57,7 @@ export default function Login() {
 
             if (result?.error) {
                 toast.error('Error trying to sign In.');
+
                 return
             }
 
@@ -55,51 +66,107 @@ export default function Login() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center w-full h-screen">
-            <h1 className="text-3xl mb-6">Sign Up</h1>
+        <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
+            <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" className="mx-auto h-10 w-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                </svg>
 
-            <form className="w-[400px] flex flex-col gap-6" onSubmit={handleSubmit}>
-                <input
-                    className="h-12 rounded-md p-2 bg-transparent border border-gray-300"
-                    type="text"
-                    name="name"
-                    placeholder="Write your Name"
-                    onChange={(e) => setName(e.target.value)}
-                />
+                <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                    Sign Up a new Account
+                </h2>
+            </div>
 
-                <input
-                    className="h-12 rounded-md p-2 bg-transparent border border-gray-300"
-                    type="text"
-                    name="email"
-                    placeholder="Write your Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+                <form noValidate className="space-y-6" onSubmit={handleSubmit}>
+                    <div>
+                        <label htmlFor="name" className="block text-sm font-medium leading-6 text-gray-900">
+                            Name
+                        </label>
 
-                <input
-                    className="h-12 rounded-md p-2 bg-transparent border border-gray-300"
-                    type="password"
-                    name="password"
-                    placeholder="Write your Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                />
+                        <div className="mt-2">
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                autoComplete="name"
+                                required
+                                onChange={(e) => setName(e.target.value)}
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
 
-                <div className="flex flex-col gap-4 sm:flex-row">
-                    <button
-                        type="button"
-                        className="w-full h-12 rounded-md border-2 border-gray-200 text-gray-200 font-bold hover:opacity-70 duration-300"
-                        onClick={() => router.replace('/')}
-                    >
-                        Sign In
-                    </button>
+                    <div>
+                        <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                            Email address
+                        </label>
 
-                    <button
-                        type="submit"
-                        className="w-full h-12 rounded-md bg-gray-300 text-gray-800 font-bold hover:bg-gray-400 duration-300"
-                    >
-                        Sign Up
-                    </button>
-                </div>
-            </form>
+                        <div className="mt-2">
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                            Password
+                        </label>
+
+                        <div className="mt-2">
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label htmlFor="confirm-password" className="block text-sm font-medium leading-6 text-gray-900">
+                            Confirm Password
+                        </label>
+
+                        <div className="mt-2">
+                            <input
+                                id="confirm-password"
+                                name="confirm-password"
+                                type="password"
+                                autoComplete="confirm-password"
+                                onChange={(e) => setConfirmedPassword(e.target.value)}
+                                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-4 sm:flex-row">
+                        <button
+                            type="button"
+                            className="flex w-full justify-center rounded-md border-2 border-indigo-600 text-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 shadow-sm hover:opacity-70"
+                            onClick={() => router.push('/')}
+                        >
+                            Sign In
+                        </button>
+
+                        <button
+                            type="submit"
+                            className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500"
+                        >
+                            Sign Up
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
     )
 }
