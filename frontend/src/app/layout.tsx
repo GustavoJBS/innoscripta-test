@@ -14,7 +14,7 @@ export default function RootLayout({
 }) {
     return (
         <html lang="pt-br">
-            <body>
+            <body className='p-6'>
                 <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
             </body>
         </html>
