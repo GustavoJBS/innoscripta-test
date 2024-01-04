@@ -18,7 +18,7 @@ enum Language: string
     case SV = 'sv';
     case ZH = 'zh';
 
-    public static function listLanguages(): array
+    public static function listOptions(): array
     {
         return collect(self::cases())
             ->map(fn (self $language) => [

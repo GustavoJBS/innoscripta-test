@@ -3,7 +3,7 @@
 use App\Enums\Language;
 use App\Models\{Category, Source, User};
 
-use function Pest\Laravel\{actingAs, get, post,  put};
+use function Pest\Laravel\{actingAs, get,  put};
 
 uses(Tests\TestCase::class);
 
