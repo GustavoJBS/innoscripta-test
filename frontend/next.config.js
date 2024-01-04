@@ -8,6 +8,7 @@ const nextConfig = {
           aggregateTimeout: 300,
         },
     }),
+    reactStrictMode: false
 }
 
 module.exports = nextConfig
