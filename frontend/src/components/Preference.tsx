@@ -1,5 +1,4 @@
 import { Accordion, AccordionItem, Card, CardBody, Checkbox, CheckboxGroup, Tab, Tabs } from "@nextui-org/react";
-import { useState } from "react";
 
 export interface PreferenceInterface {
     id: number,

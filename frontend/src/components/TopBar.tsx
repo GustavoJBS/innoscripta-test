@@ -1,6 +1,7 @@
 'use client'
 import { Button, Navbar, NavbarBrand, NavbarContent, NavbarItem, User } from "@nextui-org/react";
 import { signOut, useSession } from "next-auth/react";
+import { LogoutIcon } from "./LogoutIcon";
 
 
 const TopBar = () => {
@@ -30,11 +31,10 @@ const TopBar = () => {
                 </NavbarContent>
             }
 
-    
             <NavbarContent justify="end">
                 <NavbarItem>
-                    <Button onClick={logout}>
-                        Sign Out
+                    <Button isIconOnly onClick={logout}>
+                        <LogoutIcon />
                     </Button>
                 </NavbarItem>
             </NavbarContent>

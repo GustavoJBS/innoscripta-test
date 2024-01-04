@@ -26,9 +26,9 @@ class Article extends Model
                 }
 
                 match ($prop) {
-                    'language' => $query->whereIn('language', $value),
-                    'source'   => $query->whereIn('source_id', $value),
-                    'category' => $query->whereIn('category_id', $value),
+                    'language' => $query->where('language', $value),
+                    'source'   => $query->where('source_id', $value),
+                    'category' => $query->where('category_id', $value),
                     'search'   => $query->where('title', 'LIKE', "%$value%"),
                     'date'     => $query->whereDate('published_at', $value),
                     default    => $query->where($prop, 'LIKE', "%$value%"),

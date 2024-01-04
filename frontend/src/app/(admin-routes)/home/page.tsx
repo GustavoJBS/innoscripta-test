@@ -148,7 +148,7 @@ export default function Home() {
             }).then((response) => {
                 setArticles(response.data.articles.data)
                 setLastPage(response.data.articles.last_page)
-            }).catch(() => {
+            }).catch((e) => {
                 toast.error('Failed to fetch articles.')
             }).finally(() => setLoading(false))
         }
@@ -181,6 +181,8 @@ export default function Home() {
                 filters={filters} 
                 updateFilters={updateFilters}
                 languages={languages}
+                categories={categories}
+                sources={sources}
             />
 
             {
@@ -222,6 +224,7 @@ export default function Home() {
                     initialPage={1} 
                     onChange={(page) => {setPage(page); getArticles(page)}} 
                     page={page}
+                    size="sm"
                 />
             </div>
 
