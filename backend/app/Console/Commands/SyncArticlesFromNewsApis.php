@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Jobs\Guardian\SyncArticles as SyncArticlesGuardian;
 use App\Jobs\NewsOrg\SyncArticles as SyncArticlesNewsOrg;
+use App\Jobs\NYTimes\SyncArticles as SyncArticlesNYTimes;
 use Illuminate\Console\Command;
 
 class SyncArticlesFromNewsApis extends Command
@@ -16,5 +17,6 @@ class SyncArticlesFromNewsApis extends Command
     {
         SyncArticlesGuardian::dispatch();
         SyncArticlesNewsOrg::dispatch();
+        SyncArticlesNYTimes::dispatch();
     }
 }

@@ -41,4 +41,8 @@ return [
         'key' => env('GUARDIAN_API_KEY'),
     ],
 
+    'ny-times' => [
+        'url' => 'https://api.nytimes.com/svc/search/v2/',
+        'key' => env('NY_TIMES_API_KEY'),
+    ],
 ];
