@@ -33,7 +33,7 @@ const Article: React.FC<CardProps> = ({ article }) => {
                 </span>
 
                 <span className="font-light text-sm">
-                    {article.published_at}
+                    {new Date(article.published_at).toDateString()}
                 </span>
             </div>
         </a>
