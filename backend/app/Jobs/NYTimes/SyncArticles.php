@@ -18,7 +18,7 @@ class SyncArticles implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public const MAX_PAGES = 10;
+    public const MAX_PAGES = 5;
 
     public Article $articlesService;
 
@@ -42,14 +42,14 @@ class SyncArticles implements ShouldQueue
     {
         $data = $this->articlesService->get($categoryTitle);
 
-        if (!$data->has('docs')) {
+        if (!isset($data['response']['docs'])) {
             return;
         }
 
-        $firstPage = collect($data['docs'])
+        $firstPage = collect($data['response']['docs'])
             ->map(fn (array $article) => new ImportArticle($article, $sourceId, $categoryId));
 
-        $totalPages = ceil($data['meta']['hits'] / Article::PAGE_SIZE);
+        $totalPages = ceil($data['response']['meta']['hits'] / Article::PAGE_SIZE);
 
         $lastPage = $totalPages > self::MAX_PAGES
             ? self::MAX_PAGES

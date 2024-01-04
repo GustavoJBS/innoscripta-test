@@ -9,6 +9,8 @@ class Article extends Client
 {
     public const PAGE_SIZE = 10;
 
+    public const RATE_LIMITED_IDENTIFIER = 'policies.ratelimit.QuotaViolation';
+
     public function get(string $category, int $page = 0): Collection
     {
         $query = [
@@ -20,6 +22,6 @@ class Article extends Client
 
         return $this->api
             ->get('articlesearch.json', $query)
-            ->collect('response');
+            ->collect();
     }
 }

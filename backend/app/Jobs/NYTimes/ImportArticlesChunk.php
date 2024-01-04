@@ -3,6 +3,7 @@
 namespace App\Jobs\NYTimes;
 
 use App\Services\News\NYTimes\Article;
+use Carbon\Carbon;
 use Illuminate\Bus\{Batchable, Queueable};
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -16,6 +17,8 @@ class ImportArticlesChunk implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public $tries = 0;
+
     public function __construct(
         public int $page,
         public int $sourceId,
@@ -24,17 +27,24 @@ class ImportArticlesChunk implements ShouldQueue
     ) {
     }
 
-    public function handle(): void
+    public function handle()
     {
         $this->articlesService = new Article(config('services.ny-times.url'));
 
         $data = $this->articlesService->get($this->categoryTitle, $this->page);
 
-        if (!$data->has('docs')) {
+        if (
+            isset($data['fault']['detail']['errorcode'])
+                && $data['fault']['detail']['errorcode'] === Article::RATE_LIMITED_IDENTIFIER
+        ) {
+            return $this->release(60);
+        }
+
+        if (!isset($data['response']['docs'])) {
             return;
         }
 
-        $articleJobs = collect($data['docs'])
+        $articleJobs = collect($data['response']['docs'])
             ->map(fn (array $article) => new ImportArticle(
                 $article,
                 $this->sourceId,
@@ -42,5 +52,10 @@ class ImportArticlesChunk implements ShouldQueue
             ));
 
         $this->batch()->add($articleJobs);
+    }
+
+    public function retryUntil(): Carbon
+    {
+        return now()->addMinutes(30);
     }
 }
