@@ -16,7 +16,7 @@ it('should validate required login data', function () {
         ->assertJsonValidationErrors([
             'email'    => 'required',
             'password' => 'required',
-        ])->assertUnauthorized();
+        ])->assertMethodNotAllowed();
 });
 
 it('should validate email when login', function () {
@@ -27,14 +27,14 @@ it('should validate email when login', function () {
 
     post(route('login', $data))
         ->assertJsonValidationErrors([
-            'email'    => 'The email field must be a valid email address.',
-        ])->assertUnauthorized();
+            'email' => 'The email field must be a valid email address.',
+        ])->assertMethodNotAllowed();
 });
 
 it('should validate credentials when login', function () {
     $email = fake()->email();
     User::factory()->create([
-        'email' => $email
+        'email' => $email,
     ]);
 
     User::factory()->create();
@@ -53,7 +53,7 @@ it('should validate credentials when login', function () {
 it('should login', function () {
     $email    = fake()->email();
     $password = fake()->password();
-    $user = User::factory()->create([
+    $user     = User::factory()->create([
         'email'    => $email,
         'password' => Hash::make($password),
     ]);
@@ -69,8 +69,6 @@ it('should login', function () {
     expect(auth()->user()->id)->toBe($user->id);
 });
 
-
-
 it('should validate required data when register', function () {
     $data = [
         'name'              => '',
@@ -85,7 +83,7 @@ it('should validate required data when register', function () {
             'email'             => 'required',
             'password'          => 'required',
             'confirmedPassword' => 'required',
-        ])->assertUnauthorized();
+        ])->assertMethodNotAllowed();
 });
 
 it('should validate if confirmed password is same as password when register', function () {
@@ -99,7 +97,7 @@ it('should validate if confirmed password is same as password when register', fu
     post(route('register', $data))
         ->assertJsonValidationErrors([
             'confirmedPassword' => 'match password',
-        ])->assertUnauthorized();
+        ])->assertMethodNotAllowed();
 });
 
 it('should validate duplicated email when register', function () {
@@ -117,7 +115,7 @@ it('should validate duplicated email when register', function () {
     post(route('register', $data))
         ->assertJsonValidationErrors([
             'email' => 'The email has already been taken.',
-        ])->assertUnauthorized();
+        ])->assertMethodNotAllowed();
 });
 
 it('should register user with valid data', function () {

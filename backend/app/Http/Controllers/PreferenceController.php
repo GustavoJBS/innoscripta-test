@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\{JsonResponse, Response};
+use Illuminate\Support\Facades\Validator;
 
 class PreferenceController extends Controller
 {
@@ -17,7 +18,7 @@ class PreferenceController extends Controller
 
     public function save(): Response|JsonResponse
     {
-        $this->validate(request(), [
+        $validatedData = Validator::make(request()->all(), [
             'languages'    => ['array'],
             'languages.*'  => ['string'],
             'sources'      => ['array'],
@@ -25,6 +26,14 @@ class PreferenceController extends Controller
             'categories'   => ['array'],
             'categories.*' => ['numeric', 'exists:categories,id'],
         ]);
+
+        if ($validatedData->fails()) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'validation error',
+                'errors'  => $validatedData->errors(),
+            ], Response::HTTP_METHOD_NOT_ALLOWED);
+        }
 
         request()->user()
             ->preference()

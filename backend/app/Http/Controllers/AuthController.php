@@ -21,7 +21,7 @@ class AuthController extends Controller
                 'status'  => false,
                 'message' => 'validation error',
                 'errors'  => $validateUser->errors(),
-            ], Response::HTTP_UNAUTHORIZED),
+            ], Response::HTTP_METHOD_NOT_ALLOWED),
             !Auth::attempt(request()->only(['email', 'password'])) => response()->json([
                 'status'  => false,
                 'message' => 'Email & Password does not match with our record.',
@@ -49,7 +49,7 @@ class AuthController extends Controller
                 'status'  => false,
                 'message' => 'validation error',
                 'errors'  => $validateUser->errors(),
-            ], Response::HTTP_UNAUTHORIZED);
+            ], Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $validateUser = Arr::except($validateUser->getData(), 'confirmedPassword');
