@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Guardian;
 
+use App\Enums\Language;
 use App\Models\{Article, Category};
 use Carbon\Carbon;
 use Illuminate\Bus\{Batchable, Queueable};
@@ -36,7 +37,7 @@ class ImportArticle implements ShouldQueue
             ->updateOrCreate([
                 'title'        => $this->data['webTitle'],
                 'url'          => $this->data['webUrl'],
-                'language'     => 'en',
+                'language'     => Language::EN->value,
                 'published_at' => Carbon::createFromFormat('Y-m-d', substr($this->data['webPublicationDate'], 0, 10)),
                 'category_id'  => $this->categoryId,
                 'source_id'    => $this->sourceId,

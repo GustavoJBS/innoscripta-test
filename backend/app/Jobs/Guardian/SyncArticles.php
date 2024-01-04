@@ -2,6 +2,7 @@
 
 namespace App\Jobs\Guardian;
 
+use App\Enums\Language;
 use App\Models\Source;
 use App\Services\News\Guardian\Article;
 use Illuminate\Bus\Queueable;
@@ -59,7 +60,7 @@ class SyncArticles implements ShouldQueue
             [
                 'url'      => 'https://www.theguardian.com/',
                 'country'  => 'us',
-                'language' => 'en',
+                'language' => Language::EN->value,
             ]
         );
     }

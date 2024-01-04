@@ -2,6 +2,7 @@
 
 namespace App\Jobs\NYTimes;
 
+use App\Enums\Language;
 use App\Models\{Category, Source};
 use App\Services\News\NYTimes\Article;
 use Illuminate\Bus\Queueable;
@@ -69,7 +70,7 @@ class SyncArticles implements ShouldQueue
             [
                 'url'      => 'https://www.nytimes.com',
                 'country'  => 'us',
-                'language' => 'en',
+                'language' => Language::EN->value,
             ]
         );
     }

@@ -2,6 +2,7 @@
 
 namespace App\Jobs\NYTimes;
 
+use App\Enums\Language;
 use App\Models\{Article, Category};
 use Carbon\Carbon;
 use Illuminate\Bus\{Batchable, Queueable};
@@ -30,7 +31,7 @@ class ImportArticle implements ShouldQueue
             ->updateOrCreate([
                 'title'    => $this->data['abstract'],
                 'url'      => $this->data['web_url'],
-                'language' => 'en',
+                'language' => Language::EN->value,
                 'image'    => isset($this->data['multimedia'][0]['url'])
                     ? "https://www.nytimes.com/{$this->data['multimedia'][0]['url']}"
                     : null,
