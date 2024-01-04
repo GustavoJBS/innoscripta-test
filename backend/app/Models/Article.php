@@ -14,6 +14,7 @@ class Article extends Model
 
     protected $with = [
         'source',
+        'category',
     ];
 
     public function scopeFilter(Builder $query, array $filters): Builder
@@ -54,5 +55,10 @@ class Article extends Model
     public function source(): BelongsTo
     {
         return $this->belongsTo(Source::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
     }
 }
