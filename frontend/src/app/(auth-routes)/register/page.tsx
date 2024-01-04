@@ -37,7 +37,7 @@ export default function Login() {
             return
         }
 
-        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/register`, {
+        fetch(`${process.env.NEXT_PUBLIC_CLIENTSIDE_BACKEND_URL}/register`, {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
