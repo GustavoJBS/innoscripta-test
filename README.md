@@ -39,3 +39,5 @@ Build Docker Container
 ```bash
 docker-compose up -d
 ```
+
+Run Backend Migrations
