@@ -39,7 +39,7 @@ export default function Login() {
             return
         }
 
-        router.push('/home')
+        router.replace('/home')
     }
 
     return (
@@ -76,7 +76,7 @@ export default function Login() {
                     />
 
                     <div className="flex flex-col gap-4 sm:flex-row">
-                        <Button color="primary" variant="bordered" onClick={() => router.push('/register')} className="w-full">
+                        <Button color="primary" variant="bordered" onClick={() => router.replace('/register')} className="w-full">
                             Sign Up
                         </Button>
 
