@@ -1,6 +1,7 @@
 'use client'
 
 import Article from "@/components/Article";
+import Filter from "@/components/Filter";
 import Preference, { CheckboxArray, PreferenceInterface } from "@/components/Preference";
 import { Divider, Pagination, Spinner } from "@nextui-org/react";
 import axios from "axios";
@@ -8,20 +9,21 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
-export interface Filter {
-    languages: string[],
-    sources: string[],
-    categories: string[]
+export interface FilterInterface {
+    search: string,
+    language: string,
+    source: string,
+    category: string,
+    date: string
 }
 
 export interface ArticleInterface {
     id: string
     title: string
-    description: string
     url: string
     image: string
     published_at: string
-    content: string,
+    language: string
     category: {
         id: string,
         name: string,
@@ -31,7 +33,6 @@ export interface ArticleInterface {
         id: string,
         name: string
     }
-    
 }
 
 export default function Home() {
@@ -46,10 +47,12 @@ export default function Home() {
     const [languages, setLanguages] = useState<CheckboxArray[]>([]);
     const [sources, setSources] = useState<CheckboxArray[]>([]);
     const [categories, setCategories] = useState<CheckboxArray[]>([]);
-    const [filters, setFilters] = useState<Filter>({
-        languages: [],
-        sources: [],
-        categories: [],
+    const [filters, setFilters] = useState<FilterInterface>({
+        search: '',
+        language: '',
+        source: '',
+        category: '',
+        date: ''
     });
 
 
@@ -57,16 +60,21 @@ export default function Home() {
         if (!loaded && session?.user) {
             setLoaded(true)
 
-            getFilters()
+            getFilterOptions()
 
             getUserPreference()
         }
     }, [session]);
 
     useEffect(() => {
-        getArticles()
-    }, [page])
+        getArticles(1)
+    }, [filters]);
 
+    function updateFilters(filter: FilterInterface) {
+        setPage(1)
+
+        setFilters(filter)
+    }
     
     function updatePreference(preference: PreferenceInterface) {
         if (session?.user.token) {
@@ -79,14 +87,14 @@ export default function Home() {
             }).then(() => {
                 toast.success('Preferences updated.')
                 setPage(1)
-                getArticles()
+                getArticles(1)
             }).catch(() => {
                 toast.error('Failed to update preference.')
             })
         }
     }
 
-    function getFilters() {
+    function getFilterOptions() {
         if (session?.user.token) {
             axios.get(`${process.env.NEXT_PUBLIC_CLIENTSIDE_BACKEND_URL}/articles/filters`, {
                 "headers": {
@@ -114,15 +122,17 @@ export default function Home() {
                 }
             }).then((response) => {
                 setPreference(response.data.preference)
+
+                setPage(1)
                 
-                getArticles();
+                getArticles(1);
             }).catch(() => {
                 toast.error('Failed to fetch articles.')
             })
         }  
     }
 
-    async function getArticles() {
+    async function getArticles(page: number) {
         if (session?.user.token) {
             setLoading(true)
             axios.get(`${process.env.NEXT_PUBLIC_CLIENTSIDE_BACKEND_URL}/articles`, {
@@ -132,7 +142,8 @@ export default function Home() {
                     'Authorization': `Bearer ${session?.user.token}`
                 },
                 params: {
-                    page: page
+                    page,
+                    filter: filters,
                 }
             }).then((response) => {
                 setArticles(response.data.articles.data)
@@ -165,6 +176,12 @@ export default function Home() {
             }
     
             <Divider className="my-2" />
+
+            <Filter 
+                filters={filters} 
+                updateFilters={updateFilters}
+                languages={languages}
+            />
 
             {
                 loading
@@ -203,7 +220,8 @@ export default function Home() {
                     showControls 
                     total={lastPage} 
                     initialPage={1} 
-                    onChange={setPage} 
+                    onChange={(page) => {setPage(page); getArticles(page)}} 
+                    page={page}
                 />
             </div>
 

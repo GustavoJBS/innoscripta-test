@@ -43,7 +43,9 @@ class ArticlesController extends Controller
     {
         return request('filter.language')
             || request('filter.source')
-            || request('filter.category');
+            || request('filter.category')
+            || request('filter.search')
+            || request('filter.date');
     }
 
     private function getCategoryOptions(): Collection

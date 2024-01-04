@@ -13,7 +13,7 @@ const TopBar = () => {
 	}
 
     return (
-        <Navbar position="static">
+        <Navbar position="sticky">
             <NavbarBrand>
                 <p className="font-bold text-inherit">NEWS HUB</p>
             </NavbarBrand>

@@ -25,7 +25,7 @@ const Article: React.FC<CardProps> = ({ article }) => {
 
             <div className="flex flex-col mt-auto gap-1">
                 <span className="font-bold italic">
-                    {article.source.name}
+                    {article.source.name} ({article.language})
                 </span>
                 
                 <span className="text-md">

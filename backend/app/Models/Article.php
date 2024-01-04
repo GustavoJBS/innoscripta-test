@@ -29,6 +29,8 @@ class Article extends Model
                     'language' => $query->whereIn('language', $value),
                     'source'   => $query->whereIn('source_id', $value),
                     'category' => $query->whereIn('category_id', $value),
+                    'search'   => $query->where('title', 'LIKE', "%$value%"),
+                    'date'     => $query->whereDate('published_at', $value),
                     default    => $query->where($prop, 'LIKE', "%$value%"),
                 };
             }
