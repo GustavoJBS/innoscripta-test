@@ -15,13 +15,18 @@ const TopBar = () => {
 
     return (
         <Navbar position="sticky">
-            <NavbarBrand>
-                <p className="font-bold text-inherit">NEWS HUB</p>
-            </NavbarBrand>
+            <NavbarContent 
+                className={session?.user.name ? 'w-fit' : 'w-full'} 
+                justify={session?.user.name ? 'start' : 'center'}
+            >
+                <NavbarBrand className="flex justify-center">
+                    <p className="font-bold text-inherit text-center text-2xl">NEWS HUB</p>
+                </NavbarBrand>
+            </NavbarContent>
 
             {
                 session?.user.name &&
-                <NavbarContent justify="center">
+                <NavbarContent justify="center"  className="hidden sm:flex gap-4">
                     <NavbarItem>
                         <User   
                             name={session?.user.name}
@@ -31,13 +36,16 @@ const TopBar = () => {
                 </NavbarContent>
             }
 
-            <NavbarContent justify="end">
-                <NavbarItem>
-                    <Button isIconOnly onClick={logout}>
-                        <LogoutIcon />
-                    </Button>
-                </NavbarItem>
-            </NavbarContent>
+            {
+                session?.user.name &&
+                <NavbarContent justify="end">
+                    <NavbarItem>
+                        <Button isIconOnly onClick={logout}>
+                            <LogoutIcon />
+                        </Button>
+                    </NavbarItem>
+                </NavbarContent>
+            }
         </Navbar>
     )
 };

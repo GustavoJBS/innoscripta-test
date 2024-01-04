@@ -18,11 +18,11 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
 
     
     return (
-        <>
+        <div className='p-6 min-h-screen'>
             <TopBar />
 
             {children}
             <Toaster />
-        </>
+        </div>
     )
 }
