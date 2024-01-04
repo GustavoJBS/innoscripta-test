@@ -35,10 +35,10 @@ class ImportArticlesChunk implements ShouldQueue
         }
 
         $articleJobs = collect($data['articles'])
-            ->map(fn (int $article) => new ImportArticle(
+            ->map(fn (array $article) => new ImportArticle(
                 $article,
-                $source->id,
-                $source->language,
+                $sourceId,
+                $language,
                 $categoryId
             ));
 
