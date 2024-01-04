@@ -23,7 +23,8 @@ class CategorySeeder extends Seeder
     private function saveCategory(string $name): void
     {
         Category::query()->firstOrCreate([
-            'name' => $name,
+            'name'  => $name,
+            'title' => ucfirst($name),
         ]);
     }
 }

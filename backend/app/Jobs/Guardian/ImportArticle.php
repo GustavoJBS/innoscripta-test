@@ -21,11 +21,13 @@ class ImportArticle implements ShouldQueue
 
     public function __construct(
         public array $data,
-        public int $sourceId,
+        public int $sourceId
     ) {
         $this->categoryId = Category::query()
-            ->firstOrCreate(['name' => $this->data['sectionId']])
-            ->id;
+            ->firstOrCreate([
+                'name'  => $this->data['sectionId'],
+                'title' => $this->data['sectionName'],
+            ])->id;
     }
 
     public function handle(): void
