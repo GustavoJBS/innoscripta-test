@@ -3,6 +3,7 @@ import { ReactNode } from "react";
 import { redirect } from "next/navigation";
 import { nextAuthOptions } from "@/utils/authOptions";
 import { Toaster } from "react-hot-toast";
+import TopBar from "@/components/TopBar";
 
 interface PrivateLayoutProps {
     children: ReactNode
@@ -15,8 +16,11 @@ export default async function PrivateLayout({ children }: PrivateLayoutProps) {
         redirect('/')
     }
 
+    
     return (
         <>
+            <TopBar />
+
             {children}
             <Toaster />
         </>

@@ -26,13 +26,15 @@ const Article: React.FC<CardProps> = ({ title, imageUrl, navigateUrl, source, pu
                 {title}
             </span>
 
-            <span className="font-bold italic">
-                {source.name}
-            </span>
+            <div className="flex flex-col mt-auto gap-1">
+                <span className="font-bold italic">
+                    {source.name}
+                </span>
 
-            <span className="font-light text-sm">
-                {publishedAt}
-            </span>
+                <span className="font-light text-sm">
+                    {publishedAt}
+                </span>
+            </div>
         </a>
     );
 };

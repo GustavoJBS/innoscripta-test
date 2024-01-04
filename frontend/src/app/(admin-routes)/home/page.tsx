@@ -41,7 +41,7 @@ export default function Home() {
 
             getUserPreference()
         }
-    }, [session?.user]);
+    }, [session]);
 
     useEffect(() => {
         getArticles()
@@ -57,7 +57,7 @@ export default function Home() {
                     'Authorization': `Bearer ${session?.user.token}`
                 }
             }).then(() => {
-                toast.success('Preference updated.')
+                toast.success('Preferences updated.')
                 setPage(1)
                 getArticles()
             }).catch(() => {
@@ -131,8 +131,6 @@ export default function Home() {
 
     return session && (
         <div className="w-full min-h-screen items-center justify-center my-4">
-            <h1 className="text-2xl mb-8">Olá, {session?.user.name}. Bem vindo(a)!</h1>
-            
             {
                 hasFilters() && preference && (
                     <Preference 
@@ -149,7 +147,7 @@ export default function Home() {
             <Divider className="my-2" />
 
             {
-                loading 
+                loading
                     ? (<Spinner />) 
                     : (
                         <div className="flex flex-col">

@@ -24,8 +24,6 @@ interface PreferenceComponent {
     updatePreference: (preference: PreferenceInterface) => void
 }
 const Preference: React.FC<PreferenceComponent> = ({ preference, setPreference, updatePreference, languages, sources, categories }) => {
-    const [open, setOpen] = useState(false);
-
     function setPreferenceProperty(preference: PreferenceInterface) {
         setPreference(preference);
 
