@@ -18,10 +18,11 @@ class PreferenceController extends Controller
     public function save(): Response|JsonResponse
     {
         $this->validate(request(), [
-            'languages'    => ['array', 'min:1'],
-            'sources'      => ['array', 'min:3'],
+            'languages'    => ['array'],
+            'languages.*'  => ['string'],
+            'sources'      => ['array'],
             'sources.*'    => ['numeric', 'exists:sources,id'],
-            'categories'   => ['array', 'min:4'],
+            'categories'   => ['array'],
             'categories.*' => ['numeric', 'exists:categories,id'],
         ]);
 

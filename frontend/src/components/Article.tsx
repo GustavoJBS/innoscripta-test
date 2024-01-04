@@ -1,19 +1,20 @@
-import Image from "next/image";
-
 type CardProps = {
     title: string;
     navigateUrl: string;
-    description?: string;
     imageUrl?: string;
     source: {
         name: string;
         url: string;
-    }
+    },
+    publishedAt: string
 };
 
-const Article: React.FC<CardProps> = ({ title, description, imageUrl, navigateUrl }) => {
+const Article: React.FC<CardProps> = ({ title, imageUrl, navigateUrl, source, publishedAt }) => {
     return (
-        <a className="flex flex-col gap-3 border-2 p-4 border-gray-300 rounded-lg shadow cursor-pointer hover:opacity-60 duration-300"  href={navigateUrl}>
+        <a 
+            className="flex flex-col gap-3 border-2 p-4 border-gray-300 rounded-lg shadow cursor-pointer hover:opacity-60 duration-300"  
+            href={navigateUrl}
+        >
             <img
                 src={imageUrl ?? '/news.png'}
                 alt="Image"
@@ -25,7 +26,13 @@ const Article: React.FC<CardProps> = ({ title, description, imageUrl, navigateUr
                 {title}
             </span>
 
-            {description && <p dangerouslySetInnerHTML={{ __html: description }}></p>}
+            <span className="font-bold italic">
+                {source.name}
+            </span>
+
+            <span className="font-light text-sm">
+                {publishedAt}
+            </span>
         </a>
     );
 };

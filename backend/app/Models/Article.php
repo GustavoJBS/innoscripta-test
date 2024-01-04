@@ -39,9 +39,16 @@ class Article extends Model
         $preference = auth()->user()->preference;
 
         return $query
-            ->whereIn('language', $preference->languages)
-            ->orWhereIn('source_id', $preference->sources)
-            ->orWhereIn('category_id', $preference->categories);
+            ->when(
+                $preference->languages,
+                fn (Builder $preferenceQuery) => $preferenceQuery->whereIn('language', $preference->languages)
+            )->when(
+                $preference->sources,
+                fn (Builder $preferenceQuery) => $preferenceQuery->whereIn('source_id', $preference->sources)
+            )->when(
+                $preference->categories,
+                fn (Builder $preferenceQuery) => $preferenceQuery->whereIn('category_id', $preference->categories)
+            );
     }
 
     public function source(): BelongsTo

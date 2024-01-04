@@ -31,13 +31,11 @@ class ArticlesController extends Controller
     public function getFilters(): Response|JsonResponse
     {
         return response()->json([
-            'status'  => true,
-            'message' => 'Filters Fetched Successfully.',
-            'filters' => [
-                'languages'  => Language::listLanguages(),
-                'sources'    => $this->getSourcesOptions(),
-                'categories' => $this->getCategoryOptions(),
-            ],
+            'status'     => true,
+            'message'    => 'Filters Fetched Successfully.',
+            'languages'  => Language::listLanguages(),
+            'sources'    => $this->getSourcesOptions(),
+            'categories' => $this->getCategoryOptions(),
         ], Response::HTTP_OK);
     }
 
@@ -52,7 +50,7 @@ class ArticlesController extends Controller
     {
         return Category::query()->get()
             ->map(fn (Category $category) => [
-                'label' => str($category->name)->title(),
+                'label' => str($category->name)->replace('-', ' ')->title(),
                 'value' => $category->id,
             ]);
     }
