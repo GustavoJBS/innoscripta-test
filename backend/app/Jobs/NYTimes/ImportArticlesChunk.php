@@ -37,8 +37,8 @@ class ImportArticlesChunk implements ShouldQueue
         $articleJobs = collect($data['docs'])
             ->map(fn (array $article) => new ImportArticle(
                 $article,
-                $sourceId,
-                $categoryId
+                $this->sourceId,
+                $this->categoryId
             ));
 
         $this->batch()->add($articleJobs);
