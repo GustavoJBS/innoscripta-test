@@ -14,6 +14,26 @@ export interface Filter {
     categories: string[]
 }
 
+export interface ArticleInterface {
+    id: string
+    title: string
+    description: string
+    url: string
+    image: string
+    published_at: string
+    content: string,
+    category: {
+        id: string,
+        name: string,
+        title: string
+    },
+    source: {
+        id: string,
+        name: string
+    }
+    
+}
+
 export default function Home() {
     const { data: session } = useSession()
     const [articles, setArticles] = useState([])
@@ -157,14 +177,10 @@ export default function Home() {
                         <div className="flex flex-col">
                             <div className="w-full grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
                                 {
-                                    articles.map((article: any) => (
+                                    articles.map((article: ArticleInterface) => (
                                         <Article
                                             key={article.id}
-                                            title={article.title}
-                                            imageUrl={String(article.source.name).includes('Guardian') ? '/guardian-logo.png' : article.image}
-                                            navigateUrl={article.url}
-                                            source={article.source}
-                                            publishedAt={article.published_at}
+                                            article={article}
                                         />
                                     ))
                                 }

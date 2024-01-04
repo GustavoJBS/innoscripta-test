@@ -1,38 +1,39 @@
+import { ArticleInterface } from "@/app/(admin-routes)/home/page";
+
 type CardProps = {
-    title: string;
-    navigateUrl: string;
-    imageUrl?: string;
-    source: {
-        name: string;
-        url: string;
-    },
-    publishedAt: string
+    article: ArticleInterface
 };
 
-const Article: React.FC<CardProps> = ({ title, imageUrl, navigateUrl, source, publishedAt }) => {
+const Article: React.FC<CardProps> = ({ article }) => {
     return (
         <a 
             className="flex flex-col gap-3 border-2 p-4 border-gray-300 rounded-lg shadow cursor-pointer hover:opacity-60 duration-300"  
-            href={navigateUrl}
+            href={article.url}
         >
             <img
-                src={imageUrl ?? '/news.png'}
+                src={String(article.source.name).includes('Guardian')
+                    ? '/guardian-logo.png'
+                    : (article.image ?? '/news.png')}
                 alt="Image"
                 className="mx-auto my-3 w-3/4 max-h-28 object-contain"
                 onError={(e) => e.currentTarget.src = "/news.png"}
             />
 
             <span>
-                {title}
+                {article.title}
             </span>
 
             <div className="flex flex-col mt-auto gap-1">
                 <span className="font-bold italic">
-                    {source.name}
+                    {article.source.name}
+                </span>
+                
+                <span className="text-md">
+                    {article.category.title}
                 </span>
 
                 <span className="font-light text-sm">
-                    {publishedAt}
+                    {article.published_at}
                 </span>
             </div>
         </a>
