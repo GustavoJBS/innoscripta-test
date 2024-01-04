@@ -33,7 +33,7 @@ const Preference: React.FC<PreferenceComponent> = ({ preference, setPreference, 
         <div className="my-6">
             <Accordion variant="splitted">
                 <AccordionItem key="1" aria-label="Accordion Preferences" title="User Preferences">
-                    <Tabs aria-label="Options">
+                    <Tabs aria-label="Options" size="sm">
                         <Tab key="languages" title="Languages">
                             <Card>
                                 <CardBody>
