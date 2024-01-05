@@ -3,9 +3,10 @@
 ## 🍬 Stack
 
 * API (http://localhost:8000)
-  * Laravel (latest version)
   * PHP 8.2
-  * Mysql (and separate database for testing)
+  * PestPHP
+  * Laravel 
+  * Mysql
   * Redis
 * Client (http://localhost:8000)
   * Next 14

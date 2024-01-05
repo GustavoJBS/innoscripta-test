@@ -18,5 +18,7 @@ class SyncArticlesFromNewsApis extends Command
         SyncArticlesGuardian::dispatch();
         SyncArticlesNewsOrg::dispatch();
         SyncArticlesNYTimes::dispatch();
+
+        $this->info('Sync Article Jobs emmitted successfully.');
     }
 }
