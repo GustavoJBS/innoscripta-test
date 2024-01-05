@@ -64,11 +64,11 @@ export default function Login() {
                         className="w-full mt-2"
                         endContent={
                             <button className="focus:outline-none" type="button" onClick={() => setIsVisible(!isVisible)}>
-                            {isVisible ? (
-                                <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                            ) : (
-                                <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
-                            )}
+                                {isVisible ? (
+                                    <EyeSlashFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                ) : (
+                                    <EyeFilledIcon className="text-2xl text-default-400 pointer-events-none" />
+                                )}
                             </button>
                         }
                         onChange={(e) => setPassword(e.target.value)}
@@ -80,7 +80,7 @@ export default function Login() {
                             Sign Up
                         </Button>
 
-                        <Button color="primary" type="submit"className="w-full">
+                        <Button color="primary" type="submit" className="w-full">
                             Sign In
                         </Button>
                     </div>

@@ -1,6 +1,6 @@
 'use client'
 
-import Article from "@/components/Article";
+import Articles from "@/components/Articles";
 import Filter from "@/components/Filter";
 import Preference, { CheckboxArray, PreferenceInterface } from "@/components/Preference";
 import { Divider, Pagination, Spinner } from "@nextui-org/react";
@@ -38,7 +38,7 @@ export interface ArticleInterface {
 export default function Home() {
     const { data: session } = useSession()
     const [articles, setArticles] = useState([])
-    const [preference, setPreference] = useState<PreferenceInterface|null>(null)
+    const [preference, setPreference] = useState<PreferenceInterface | null>(null)
     const [loaded, setLoaded] = useState(false);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -75,7 +75,7 @@ export default function Home() {
 
         setFilters(filter)
     }
-    
+
     function updatePreference(preference: PreferenceInterface) {
         if (session?.user.token) {
             axios.put(`${process.env.NEXT_PUBLIC_CLIENTSIDE_BACKEND_URL}/preference`, preference, {
@@ -124,12 +124,12 @@ export default function Home() {
                 setPreference(response.data.preference)
 
                 setPage(1)
-                
+
                 getArticles(1);
             }).catch(() => {
                 toast.error('Failed to fetch articles.')
             })
-        }  
+        }
     }
 
     async function getArticles(page: number) {
@@ -155,16 +155,16 @@ export default function Home() {
     }
 
     function hasFilters() {
-        return Boolean(categories.length 
-            || languages.length 
+        return Boolean(categories.length
+            || languages.length
             || sources.length)
     }
 
-    return session && (
+    return preference && (
         <div className="w-full min-h-screen items-center justify-center my-4">
             {
                 hasFilters() && preference && (
-                    <Preference 
+                    <Preference
                         preference={preference}
                         setPreference={setPreference}
                         languages={languages}
@@ -174,11 +174,11 @@ export default function Home() {
                     />
                 )
             }
-    
+
             <Divider className="my-2" />
 
-            <Filter 
-                filters={filters} 
+            <Filter
+                filters={filters}
                 updateFilters={updateFilters}
                 languages={languages}
                 categories={categories}
@@ -187,42 +187,17 @@ export default function Home() {
 
             {
                 loading
-                    ? (
-                        <div className="w-full flex justify-center">
-                            <Spinner />
-                        </div>
-                    ) 
-                    : (
-                        <div className="flex flex-col">
-                            <div className="w-full grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
-                                {
-                                    articles.map((article: ArticleInterface) => (
-                                        <Article
-                                            key={article.id}
-                                            article={article}
-                                        />
-                                    ))
-                                }
-                            </div>
-
-                            {
-                                articles.length === 0 && (
-                                    <div className="text-xl font-semibold w-full text-center">
-                                        No Articles Found
-                                    </div>
-                                )
-                            }
-                        </div>
-                    )
+                    ? <Spinner className="w-full" />
+                    : <Articles articles={articles} />
             }
 
             <div className="flex justify-center my-6">
-                <Pagination 
-                    showShadow 
-                    showControls 
-                    total={lastPage} 
-                    initialPage={1} 
-                    onChange={(page) => {setPage(page); getArticles(page)}} 
+                <Pagination
+                    showShadow
+                    showControls
+                    total={lastPage}
+                    initialPage={1}
+                    onChange={(page) => { setPage(page); getArticles(page) }}
                     page={page}
                     size="sm"
                 />

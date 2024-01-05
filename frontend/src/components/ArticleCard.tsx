@@ -1,10 +1,10 @@
 import { ArticleInterface } from "@/app/(admin-routes)/home/page";
 
-type CardProps = {
+type ArticleCardProps = {
     article: ArticleInterface
 };
 
-const Article: React.FC<CardProps> = ({ article }) => {
+const ArticleCard: React.FC<ArticleCardProps> = ({ article }) => {
     return (
         <a 
             className="flex flex-col gap-3 border-2 p-4 border-gray-300 rounded-lg shadow cursor-pointer hover:opacity-60 duration-300"  
@@ -40,4 +40,4 @@ const Article: React.FC<CardProps> = ({ article }) => {
     );
 };
 
-export default Article;
+export default ArticleCard;
