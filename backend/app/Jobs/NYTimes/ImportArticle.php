@@ -28,16 +28,18 @@ class ImportArticle implements ShouldQueue
     public function handle(): void
     {
         Article::query()
-            ->updateOrCreate([
-                'title'    => $this->data['abstract'],
-                'url'      => $this->data['web_url'],
-                'language' => Language::EN->value,
-                'image'    => isset($this->data['multimedia'][0]['url'])
-                    ? "https://www.nytimes.com/{$this->data['multimedia'][0]['url']}"
-                    : null,
-                'published_at' => Carbon::createFromFormat('Y-m-d', substr($this->data['pub_date'], 0, 10)),
-                'category_id'  => $this->categoryId,
-                'source_id'    => $this->sourceId,
-            ]);
+            ->updateOrCreate(
+                ['title' => $this->data['abstract']],
+                [
+                    'url'      => $this->data['web_url'],
+                    'language' => Language::EN->value,
+                    'image'    => isset($this->data['multimedia'][0]['url'])
+                        ? "https://www.nytimes.com/{$this->data['multimedia'][0]['url']}"
+                        : null,
+                    'published_at' => Carbon::createFromFormat('Y-m-d', substr($this->data['pub_date'], 0, 10)),
+                    'category_id'  => $this->categoryId,
+                    'source_id'    => $this->sourceId,
+                ]
+            );
     }
 }
