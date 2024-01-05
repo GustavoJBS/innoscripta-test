@@ -1,17 +1,18 @@
 # News Aggregator
 
-## 🍬 Stack includes
+## 🍬 Stack
 
-* API (Port: 8000)
+* API (http://localhost:8000)
   * Laravel (latest version)
-  * PHP 8.2 - FPM
+  * PHP 8.2
   * Mysql (and separate database for testing)
   * Redis
-* Client (Port: 3000)
+* Client (http://localhost:8000)
   * Next 14
   * Typescript
+  * TailwindCSS
 
-## ⚙ Installation
+## 🧑‍💻 Installation
 
 ```bash
 git clone https://github.com/GustavoJBS/news-hub.git
@@ -40,4 +41,59 @@ Build Docker Container
 docker-compose up -d
 ```
 
+Get Backend Container Name (news-hub-backend-1)
+
+```bash
+docker ps
+```
+
+Generate New Laravel Application Key
+
+```bash
+docker exec -it news-hub-backend-1 php artisan key:generate
+```
+
 Run Backend Migrations
+
+```bash
+docker exec -it news-hub-backend-1 php artisan migrate --seed
+```
+
+Insert News API Credentials at Backend .env
+
+```bash
+cd backend
+nano .env
+```
+
+* [News Org API](https://newsapi.org/)
+  * NEWS_API_KEY=
+* [The Guardian API](https://open-platform.theguardian.com/)
+  * GUARDIAN_API_KEY=
+* [New York Times API](https://developer.nytimes.com/)
+  * NY_TIMES_API_KEY=
+
+Clear Application CACHE
+
+```bash
+docker exec -it news-hub-backend-1 php artisan optimize:clear
+```
+
+Run command to update Database Articles (Artisan Command)
+
+```bash
+docker exec -it news-hub-backend-1 php artisan horizon
+docker exec -it news-hub-backend-1 php artisan app:sync-source-articles-from-apis
+```
+
+Run command to update Database Articles (Scheduler Command)
+
+```bash
+docker exec -it news-hub-backend-1 php artisan schedule:test
+```
+
+Backend Tests
+
+```bash
+docker exec -it news-hub-backend-1 php artisan test
+```
