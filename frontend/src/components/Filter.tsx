@@ -18,22 +18,25 @@ const Filter: React.FC<FilterProps> = ({ filters, updateFilters, languages, cate
                 label="Search Article by Title"
                 labelPlacement="inside"
                 className="w-full md:w-52 mt-2 gap-1"
+                size="sm"
                 onChange={(e) => updateFilters({...filters, search: e.target.value})}
             />
 
             <div className="flex gap-8 md:gap-6 flex-wrap w-full md:w-fit mt-2">
                 <Input
                     type="date"
-                    className="w-full md:w-52 h-fit !mt-0"
+                    className="w-full md:w-48 h-fit !mt-0"
                     onChange={(e) => updateFilters({...filters, date: e.target.value})}
                     labelPlacement="inside"
+                    size="sm"
                 />
 
                 <Select
                     label="Language"
-                    className="w-full md:w-52 !mt-0" 
+                    className="w-full md:w-48 !mt-0" 
                     labelPlacement="inside"
                     onChange={(e) => updateFilters({...filters, language: e.target.value})}
+                    size="sm"
                 >
                     {languages.map((language) => (
                         <SelectItem key={language.value} value={language.value}>
@@ -44,9 +47,10 @@ const Filter: React.FC<FilterProps> = ({ filters, updateFilters, languages, cate
 
                 <Select
                     label="Category"
-                    className="w-full md:w-52 !mt-0" 
+                    className="w-full md:w-48 !mt-0" 
                     labelPlacement="inside"
                     onChange={(e) => updateFilters({...filters, category: e.target.value})}
+                    size="sm"
                 >
                     {categories.map((category) => (
                         <SelectItem key={category.value} value={category.value}>
@@ -57,9 +61,10 @@ const Filter: React.FC<FilterProps> = ({ filters, updateFilters, languages, cate
 
                 <Select
                     label="Source"
-                    className="w-full md:w-52 !mt-0" 
+                    className="w-full md:w-48 !mt-0" 
                     labelPlacement="inside"
                     onChange={(e) => updateFilters({...filters, source: e.target.value})}
+                    size="sm"
                 >
                     {sources.map((source) => (
                         <SelectItem key={source.value} value={source.value}>
