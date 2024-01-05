@@ -8,7 +8,6 @@ services:
             - 8000:8000
         volumes:
             - ./backend:/app/backend
-            - /app/backend/vendor
         depends_on:
             - mysql
         networks:
@@ -21,8 +20,6 @@ services:
             - 3000:3000
         volumes:
             - ./frontend:/app/frontend
-            - /app/frontend/node_modules
-            - /app/frontend/.next
         depends_on:
             - backend
         networks:
