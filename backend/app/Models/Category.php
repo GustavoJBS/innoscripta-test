@@ -15,7 +15,9 @@ class Category extends Model
 
     public static function listOptions(): Collection
     {
-        return self::query()->get()
+        return self::query()
+            ->whereHas('articles')
+            ->get()
             ->map(fn (self $category) => [
                 'label' => str($category->name)->replace('-', ' ')->title(),
                 'value' => $category->id,
