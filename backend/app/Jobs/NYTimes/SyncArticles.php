@@ -9,6 +9,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\{ShouldBeUnique, ShouldQueue};
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\{InteractsWithQueue, SerializesModels};
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 
 class SyncArticles implements ShouldQueue
@@ -28,22 +29,28 @@ class SyncArticles implements ShouldQueue
 
         $source = $this->getNYTimesSource();
 
+        $batches = collect();
+
         Category::query()
             ->each(
-                fn (Category $category) => $this->syncArticles(
+                fn (Category $category) => $batches->push(...$this->getSyncArticlesBatches(
                     $source->id,
                     $category->id,
                     $category->title
-                )
+                ))
             );
+
+        Bus::batch($batches)
+            ->name('Import Articles from The New York Times')
+            ->dispatch();
     }
 
-    public function syncArticles(int $sourceId, int $categoryId, string $categoryTitle): void
+    public function getSyncArticlesBatches(int $sourceId, int $categoryId, string $categoryTitle): Collection
     {
         $data = $this->articlesService->get($categoryTitle);
 
         if (!isset($data['response']['docs'])) {
-            return;
+            return collect();
         }
 
         $firstPage = collect($data['response']['docs'])
@@ -58,9 +65,7 @@ class SyncArticles implements ShouldQueue
         $pageChunks = collect(range(1, $lastPage))
             ->map(fn (int $page) => new ImportArticlesChunk($page, $sourceId, $categoryId, $categoryTitle));
 
-        Bus::batch($firstPage->merge($pageChunks))
-            ->name('Import Articles from The New York Times')
-            ->dispatch();
+        return $firstPage->merge($pageChunks);
     }
 
     private function getNYTimesSource(): Source
