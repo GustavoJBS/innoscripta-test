@@ -80,14 +80,14 @@ Clear Application CACHE
 docker exec -it news-hub-backend-1 php artisan optimize:clear
 ```
 
-Run command to update Database Articles (Artisan Command)
+Command to update Database Articles (Artisan Command)
 
 ```bash
 docker exec -it news-hub-backend-1 php artisan horizon
 docker exec -it news-hub-backend-1 php artisan app:sync-source-articles-from-apis
 ```
 
-Run command to update Database Articles (Scheduler Command)
+Command to update Database Articles (Scheduler Command)
 
 ```bash
 docker exec -it news-hub-backend-1 php artisan schedule:test
