@@ -146,6 +146,7 @@ export default function Home() {
                     filter: filters,
                 }
             }).then((response) => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
                 setArticles(response.data.articles.data)
                 setLastPage(response.data.articles.last_page)
             }).catch((e) => {
